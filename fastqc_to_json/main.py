@@ -46,6 +46,14 @@ def main():
     args = parser.parse_args()
     sqlite_path = args.sqlite_path
 
+    # if no data, then output zero byte json file
+    sqlite_size = os.path.getsize(sqlite_path)
+    if sqlite_size == 0:
+        cmd = ['touch', 'fastqc.json']
+        output = subprocess.check_output(cmd, shell=False)
+        return
+
+    # if data, then output populated json
     cmd = ['sqlite3', sqlite_path, '"select * from fastqc_data_Basic_Statistics;"']
     shell_cmd = ' '.join(cmd)
     output = subprocess.check_output(shell_cmd, shell=True).decode('utf-8')
