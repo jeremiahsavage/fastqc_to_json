@@ -25,6 +25,10 @@ def db_to_json(result):
         elif key == 'Sequences flagged as poor quality':
             data[filename][key] = int(value)
         elif key == 'Sequence length':
+            if ('-') in value:
+                value_split = value.split('-')
+                value_int = [int(x) for x in value_split]
+                value = max(value_int)
             data[filename][key] = int(value)
         elif key == '%GC':
             data[filename][key] = int(value)
